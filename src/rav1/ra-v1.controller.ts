@@ -1,9 +1,13 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Header, Logger, Post } from '@nestjs/common';
 
 @Controller('ra_v1')
 export class Ra_v1Controller {
+  constructor(private logger: Logger) {}
+
   @Post('/provision-pseudonym-certificate-batch')
+  @Header('content-type', 'application/octet-stream')
   provision_application_certificat(): string {
+    this.logger.verbose('/provision-pseudonym-certificate-batch');
     return 'provision-pseudonym-certificate-batch';
   }
 
