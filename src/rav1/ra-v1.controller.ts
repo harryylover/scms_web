@@ -1,4 +1,15 @@
-import { Controller, Get, Header, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  Logger,
+  Post,
+  Req,
+  Response,
+} from '@nestjs/common';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Response as Res, Request } from 'express';
 
 @Controller('ra_v1')
 export class Ra_v1Controller {
@@ -6,9 +17,15 @@ export class Ra_v1Controller {
 
   @Post('/provision-pseudonym-certificate-batch')
   @Header('content-type', 'application/octet-stream')
-  provision_application_certificat(): string {
+  @ApiConsumes('application/octet-stream')
+  provision_application_certificat(
+    @Req() req: Request,
+    @Response() res: Res,
+  ): Res {
     this.logger.verbose('/provision-pseudonym-certificate-batch');
-    return 'provision-pseudonym-certificate-batch';
+    this.logger.verbose(`payload hex is ${req.body.toString('hex')}`);
+    res.set({ 'Content-Type': 'application/octet-stream' });
+    return res.send(req.body);
   }
 
   //https://wiki.campllc.org/display/SCP/RA+-+Download+.info+File
